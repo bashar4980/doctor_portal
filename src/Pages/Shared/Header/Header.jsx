@@ -1,10 +1,17 @@
 import React, { useContext } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../context/Authcontext";
 import "./Header.css";
 
 const Header = () => {
-  const {user} = useContext(UserContext);
+  const {user , logOut} = useContext(UserContext);
+  const logoutHandeler = ()=>{
+    logOut()
+    .then(()=>{
+      toast.success("Log out successfully")
+    })
+  }
   const menuItem = (
     <>
       <li>
@@ -22,13 +29,16 @@ const Header = () => {
         <Link to="/reviews">Reviews</Link>
       </li>
       <li>
+        <Link to="/dashboard">Dashboard</Link>
+      </li>
+      <li>
         <Link to="/contract">Contract Us</Link>
       </li>
       {
         user?.uid ? 
         <>
-        <button className="mr-5">{user?.displayName}</button>
-        <button>Logout</button>
+       <li> <button>{user?.displayName}</button></li>
+       <li> <button onClick={logoutHandeler }>Logout</button></li>
         </>
         :
         <>
@@ -67,7 +77,7 @@ const Header = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow right-3 bg-base-100 rounded-box w-52"
+            className="menu menu-compact dropdown-content mt-3 p-1 shadow right-3 bg-base-100 rounded-box w-52"
           >
             {menuItem}
           </ul>

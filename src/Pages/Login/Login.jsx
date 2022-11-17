@@ -1,37 +1,44 @@
-import React ,{useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/Authcontext";
+import Reset from "../ResetModal/Reset";
 
 const Login = () => {
-  const {signinUser} = useContext(UserContext);
-  const {register, reset,handleSubmit} = useForm();
-  const [error , setError] = useState("")
+  const { signinUser } = useContext(UserContext);
+  const { register, reset, handleSubmit } = useForm();
+  const [error, setError] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  let from = location.state?.from?.pathname || "/";
 
-  const loginHandeler = (data) =>{
-     const email = data.email;
-     const password = data.password;
-     signinUser(email,password)
-     .then(result=>{
-      const user = result.user;
-      toast.success("Login Successfully")
-      console.log(user)
-      reset()
-     })
-     .catch(error =>{
-      setError(error.message)
-      console.log(error)
-     })
+  const loginHandeler = (data) => {
+    const email = data.email;
+    const password = data.password;
+    signinUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        toast.success("Login Successfully");
+        console.log(user);
+        navigate(from, { replace: true });
+        reset();
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.log(error);
+      });
+  };
 
-  }
+  console.log();
+
   return (
     <div className="max-w-sm mx-auto  my-10 p-8 space-y-3 rounded-xl bg-white drop-shadow-lg text-neutral">
       <h1 className="text-2xl font-bold text-gray-900 text-center">Login</h1>
 
       <form className="space-y-6" onSubmit={handleSubmit(loginHandeler)}>
         <div className="space-y-1 text-sm">
-          <label for="username" className="block text-neutral">
+          <label htmlFor="username" className="block text-neutral">
             Email
           </label>
           <input
@@ -43,8 +50,9 @@ const Login = () => {
             className="w-full px-4 py-3 rounded-md border-gray-700 border text-neutral focus:border-violet-400"
           />
         </div>
+        
         <div className="space-y-1 text-sm">
-          <label for="password" className="block text-neutral">
+          <label htmlFor="password" className="block text-neutral">
             Password
           </label>
           <input
@@ -56,9 +64,11 @@ const Login = () => {
             className="w-full px-4 py-3 rounded-md border-gray-700 border text-neutral focus:border-violet-400"
           />
           <div className="flex justify-end text-xs text-neutral">
-            <a rel="noopener noreferrer" href="/">
-              Forgot Password?
-            </a>
+            
+              <label className="reset"  htmlFor="reset">
+               Forgot password ?
+              </label>
+          
           </div>
         </div>
         <button
@@ -89,6 +99,7 @@ const Login = () => {
         Don't have an account?
         <Link to="/signup">Register</Link>
       </p>
+      <Reset></Reset>
     </div>
   );
 };
