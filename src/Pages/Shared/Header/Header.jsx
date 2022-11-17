@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../../context/Authcontext";
 import "./Header.css";
 
 const Header = () => {
+  const {user} = useContext(UserContext);
   const menuItem = (
     <>
       <li>
@@ -22,12 +24,25 @@ const Header = () => {
       <li>
         <Link to="/contract">Contract Us</Link>
       </li>
-      <li>
+      {
+        user?.uid ? 
+        <>
+        <button className="mr-5">{user?.displayName}</button>
+        <button>Logout</button>
+        </>
+        :
+        <>
+        <li>
         <Link to="/login">Login</Link>
       </li>
       <li>
         <Link to="/signup">Signup</Link>
       </li>
+        </>
+
+
+      }
+      
     </>
   );
   return (
