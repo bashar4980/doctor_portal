@@ -1,12 +1,10 @@
-import React from "react";
+import React from 'react';
 
-
-const AppointmentOption = ({ appointment , setBooking}) => {
-  const { name, slots } = appointment;
-  return (
-    <div>
-       
-      <div className="card  shadow">
+const AppointmentCard = ({appointment , setBooking}) => {
+    const {slots , name} = appointment
+    return (
+    
+             <div className="card  shadow">
         <div className="card-body">
           <h2 className="text-primary font-bold text-xl text-center">{name}</h2>
           <p className="text-center">
@@ -16,8 +14,10 @@ const AppointmentOption = ({ appointment , setBooking}) => {
             {slots.length} {slots.length > 1 ? "SPACES" : "SPACE"} AVAILABLE
           </p>
           <div className="card-actions justify-center">
-            <label onClick={()=>setBooking(appointment)}
-              htmlFor="appointment"
+            <label
+             htmlFor="booking"
+            onClick={()=> setBooking(appointment)}
+             
               className="btn btn-primary text-white font-semibold"
             >
               Book Appointment
@@ -26,8 +26,7 @@ const AppointmentOption = ({ appointment , setBooking}) => {
         </div>
       </div>
     
-    </div>
-  );
+    );
 };
 
-export default AppointmentOption;
+export default AppointmentCard;
